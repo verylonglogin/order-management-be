@@ -1,29 +1,37 @@
-## To start the project 
+# Order Management Project
+
+This project consists of both a **backend** and a **frontend**, designed to manage and display order-related data efficiently. The **frontend** provides an intuitive user interface for creating, viewing, and filtering orders, while the **backend** handles data storage, validation, and business logic.
+
+## Getting Started
+
+To start the project, follow these steps:
+
 ```bash
+# Start the backend
 cd order-management-be
 docker-compose up  
 
+# Start the frontend
 cd ../order-management-fe 
 docker-compose up  
-
-
 ```
-## to stop 
+Stopping the Project
+
+To shut down all running services, use:
 ``` bash
 docker-compose down
 ```
 ### What I would like to add if I had more time:
-1. Tests & linter
+1. Tests & Linter
 2. Better UI/UX
-3. validations on server side 
-4. add more columns in db like created_at
-5. Monitoring
-6. Logging
-7. Field 'amount' should use proper monetary structures, to handle precision and rounding issues
-8. I'm not happy with the search by payment description, I used pg websearch_to_tsquery, but would investigate more
-9. I'm not happy with using nanoid for order.id generation, I'd write my own function for this purpose, because it's a crucial part of the system and I wouldn't want to depend on third party library
-10. Caching, though it might be an overkill
-11. Drop-downs/helpers for currency and countries
+3. Server-Side Validations
+4. Additional Database Fields – Include timestamps such as created_at
+5. Monitoring & Logging
+6. Monetary Precision – Ensure the amount field uses proper monetary structures to prevent rounding errors
+7. I'm not happy with the search by payment description, I used pg websearch_to_tsquery, but would investigate more
+8. Custom Order ID Generation – Replace nanoid with a custom implementation to avoid reliance on third-party libraries for a critical system component
+9. Caching, though it might be an overkill
+10. Dropdowns/Helpers for Currency & Country Selection – Improve input UX with pre-defined options
 
 ### This is as far as I managed to get
 1. Create Order Form that allows you to insert an order into the database.
@@ -32,7 +40,7 @@ docker-compose down
    1) a filter for the country
    2) A filter for the description where users could input text and search by description.(Used a fullText search on pg side)
 4) Sorting orders according to the spec ( Orders in Estonia (if present) should go first, then sort by the payment due date ascending)
-5) The backend application should allow us to persist the orders in the database and to filter by country and description text.
-6) BE generates unique IDs for each order (using nanoid)
+5) Backend – Supports order persistence, filtering by country, and description-based search
+6) Order ID Generation – The backend assigns unique order IDs using nanoid
 
 
