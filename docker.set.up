@@ -1,0 +1,6 @@
+docker run --name order-management-db \
+  -e POSTGRES_USER=usr \
+  -e POSTGRES_PASSWORD=pwd \
+  -e POSTGRES_DB=order-management \
+  -p 5432:5432 \
+  -d postgres

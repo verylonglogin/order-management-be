@@ -1,0 +1,3 @@
+docker exec -it order-management-be_db_1 psql -U usr -d order-management
+
+typeorm migration:create src/migrations/UpdatePaymentDescriptionTsv

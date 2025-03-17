@@ -1,0 +1,45 @@
+version: '3.8'
+
+networks:
+  order-management-network:
+    driver: bridge
+
+services:
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: usr
+      POSTGRES_PASSWORD: pwd
+      POSTGRES_DB: order-management
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - order-management-network
+
+  order-management-be:
+    image: order-management-be:latest  # Use a named local image
+    build: .
+    restart: always
+    container_name: order-management-be
+    depends_on:
+      - db
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      DATABASE_USER: usr
+      DATABASE_PASSWORD: pwd
+      DATABASE_NAME: order-management
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app  # Mount local project files into the container
+    networks:
+      - order-management-network
+
+volumes:
+  pgdata:
