@@ -28,8 +28,8 @@ export class OrderService {
             );
         }
         if (paymentDescription) {
-            queryBuilder.andWhere("orders.payment_description_tsv @@ websearch_to_tsquery('english', :query)", {
-                query: paymentDescription.replace(/\s+/g, " & "),
+            queryBuilder.andWhere("orders.payment_description @@ to_tsquery(:query)", {
+                query: paymentDescription.concat(':*'),
             })
         }
         queryBuilder.addOrderBy("(CASE WHEN orders.country = 'Estonia' THEN 1 ELSE 2 END)", "ASC");
@@ -74,7 +74,7 @@ export class OrderService {
             }
         }
 
-        throw new ConflictException('Failed to create order after multiple attempts due to duplicate order.id violation');
+        throw new Error('Failed to create order after multiple attempts due to duplicate order.id violation');
     }
 
 }

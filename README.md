@@ -1,6 +1,7 @@
 # Order Management Project
 
-This project consists of both a **backend** and a **frontend**, designed to manage and display order-related data efficiently. The **frontend** provides an intuitive user interface for creating, viewing, and filtering orders, while the **backend** handles data storage, validation, and business logic.
+This project consists of both a **backend** and a **frontend**
+The data is pre-populated using src/migrations/1742244531377-SeedOrders.ts
 
 ## Getting Started
 
@@ -28,7 +29,6 @@ docker-compose down
 4. Additional Database Fields – Include timestamps such as created_at
 5. Monitoring & Logging
 6. Monetary Precision – Ensure the amount field uses proper monetary structures to prevent rounding errors
-7. I'm not happy with the search by payment description, I used pg websearch_to_tsquery, but would investigate more
 8. Custom Order ID Generation – Replace nanoid with a custom implementation to avoid reliance on third-party libraries for a critical system component
 9. Caching, though it might be an overkill
 10. Dropdowns/Helpers for Currency & Country Selection – Improve input UX with pre-defined options
@@ -42,5 +42,6 @@ docker-compose down
 4) Sorting orders according to the spec ( Orders in Estonia (if present) should go first, then sort by the payment due date ascending)
 5) Backend – Supports order persistence, filtering by country, and description-based search
 6) Order ID Generation – The backend assigns unique order IDs using nanoid
+7) Pre-populated table orders from 1742244531377-SeedOrders.ts migration
 
 

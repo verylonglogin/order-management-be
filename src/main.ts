@@ -1,6 +1,6 @@
 import {NestFactory} from '@nestjs/core';
 import {AppModule} from './app.module';
-import {pgConfig} from "./config/dbConfig";
+import {pgConfig} from "./config/db.config";
 import {DataSource} from "typeorm";
 
 async function bootstrap() {
@@ -14,20 +14,20 @@ async function bootstrap() {
   let maxRetries = 5;
   while (maxRetries) {
     try {
-      const dataSource = new DataSource(pgConfig);
+      const dataSource = new DataSource(pgConfig());
       await dataSource.initialize();
-      console.log("Database connection established with tables:", dataSource.entityMetadatas.map(e => e.tableName));
+      console.log("Database connection established");
       break;
     } catch (err) {
-      console.error(`Database connection failed. Retrying in 5 seconds... ${maxRetries} attempts left`);
+      console.error(`Database connection failed. Retrying in 5 seconds ${maxRetries} attempts left`);
       maxRetries -= 1;
       await new Promise(res => setTimeout(res, 5000));
     }
   }
 
-  const dataSource = new DataSource(pgConfig);
+  const dataSource = new DataSource(pgConfig());
   dataSource.initialize()
-      .then(() => console.log("Database connection established tables::",dataSource.entityMetadatas.map(e=> e.tableName) ))
+      .then(() => console.log("Database connection established tables:",dataSource.entityMetadatas.map(e=> e.tableName) ))
       .catch((error) => console.error("Database connection failed", error));
 
   await app.listen(process.env.PORT ?? 3000);

@@ -18,6 +18,11 @@ services:
       - pgdata:/var/lib/postgresql/data
     networks:
       - order-management-network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U usr -d order-management" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   order-management-be:
     image: order-management-be:latest  # Use a named local image
@@ -25,7 +30,8 @@ services:
     restart: always
     container_name: order-management-be
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       NODE_ENV: development
       PORT: 3000
@@ -40,6 +46,30 @@ services:
       - .:/app  # Mount local project files into the container
     networks:
       - order-management-network
+    entrypoint: ["/bin/sh", "-c", "npm run start "]
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:3000/health" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  migrations:
+    image: order-management-be:latest
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      DATABASE_USER: usr
+      DATABASE_PASSWORD: pwd
+      DATABASE_NAME: order-management
+    depends_on:
+      order-management-be:
+        condition: service_healthy
+    networks:
+      - order-management-network
+    working_dir: /usr/src/app
+    entrypoint: ["/bin/sh", "-c", "npm run migration:run "]
 
 volumes:
   pgdata:

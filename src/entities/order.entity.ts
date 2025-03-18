@@ -17,13 +17,6 @@ export class Order {
     })
     payment_description: string;
 
-    @Column({
-        type: 'tsvector',
-        nullable: false,
-        select: false // Exclude from select queries by default
-    })
-    payment_description_tsv: string;
-
     @Column()
     street_address: string;
 
