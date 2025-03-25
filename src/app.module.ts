@@ -1,5 +1,5 @@
 import {Module} from '@nestjs/common';
-import {OrderService} from './order/order.service';
+import {OrderService} from './services/order.service';
 import {TypeOrmModule} from "@nestjs/typeorm";
 import {pgConfig} from "./config/db.config";
 import {OrderController} from "./controllers/order.controller";

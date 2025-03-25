@@ -56,26 +56,39 @@ export class OrderService {
     async create(dto: CreateOrderDto) {
         let attempt = 0;
         const maxRetries = 5;
-        let order = mapCreateOrderDtoToEntity(dto)
+        const order = mapCreateOrderDtoToEntity(dto);
+
         while (attempt < maxRetries) {
             try {
                 order.id = await this.generateOrderId();
                 return await this.orderRepository.insert(order);
             } catch (error) {
-                if (error.code === this.UNIQUE_CONSTRAINT_VIOLATION && error.message.includes('violates unique constraint "PK_')) {
+                if (
+                    error.code === this.UNIQUE_CONSTRAINT_VIOLATION &&
+                    error.message.includes('PK_')
+                ) {
                     attempt++;
                     console.log(`Retry attempt ${attempt} due to duplicate order.id violation.`);
                     continue;
-                } else if (error.code === this.UNIQUE_CONSTRAINT_VIOLATION) {
-                    throw new ConflictException('Order with this number already exists')
+                } else if (
+                    error.code === this.UNIQUE_CONSTRAINT_VIOLATION &&
+                    error.message.includes('IDX_')
+                ) {
+                    throw new ConflictException({
+                        code: 'ORDER_NUMBER_EXISTS',
+                        message: 'Order with this number already exists',
+                    });
                 }
-
                 throw error;
             }
         }
 
-        throw new Error('Failed to create order after multiple attempts due to duplicate order.id violation');
+        throw new ConflictException({
+            code: 'ORDER_ID_RETRIES_EXCEEDED',
+            message: 'Failed to create order after multiple attempts. Order ID already exists.',
+        });
     }
+
 
 }
 

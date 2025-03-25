@@ -23,15 +23,14 @@ To shut down all running services, use:
 docker-compose down
 ```
 ### What I would like to add if I had more time:
-1. Tests & Linter
-2. Better UI/UX
+1. Tests & Linter & Snyk
+2. Better UI/UX, Dropdowns/Helpers for Currency & Country Selection – Improve input UX with pre-defined options
 3. Server-Side Validations
 4. Additional Database Fields – Include timestamps such as created_at
 5. Monitoring & Logging
 6. Monetary Precision – Ensure the amount field uses proper monetary structures to prevent rounding errors
 8. Custom Order ID Generation – Replace nanoid with a custom implementation to avoid reliance on third-party libraries for a critical system component
 9. Caching, though it might be an overkill
-10. Dropdowns/Helpers for Currency & Country Selection – Improve input UX with pre-defined options
 
 ### This is as far as I managed to get
 1. Create Order Form that allows you to insert an order into the database.
